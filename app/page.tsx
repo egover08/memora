@@ -15,6 +15,10 @@ export default function Home() {
   const [startedTheme, setStartedTheme] = useState("");
   const [startedStyle, setStartedStyle] = useState("");
   const [gameStarted, setGameStarted] = useState(false);
+  const [round, setRound] = useState(1);
+  const [guess, setGuess] = useState("");
+  const [guesses, setGuesses] = useState<string[]>([]);
+  const [gameFinished, setGameFinished] = useState(false);
 
   const handleStart = () => {
     setStartedTheme(theme);
@@ -22,6 +26,57 @@ export default function Home() {
     setGameStarted(true);
   };
 
+  const handleNext = () => {
+    if (!guess.trim()) return;
+
+    setGuesses([...guesses, guess]);
+
+    if (round < 3) {
+      setRound(round + 1);
+      setGuess("");
+    } else {
+      setGameFinished(true);
+    }
+  };
+
+  if (gameFinished) {
+    return (
+      <main className="min-h-screen bg-zinc-950 text-white">
+        <div className="mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-6 py-12">
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl">
+            <p className="mb-3 text-sm font-medium tracking-[0.3em] text-purple-300">
+              MEMORA
+            </p>
+
+            <h1 className="mb-6 text-4xl font-bold">Result</h1>
+
+            <div className="mb-6 rounded-2xl border border-white/10 bg-zinc-900 p-5">
+              <p className="mb-2 text-sm text-zinc-400">Original Theme</p>
+              <p className="text-lg font-semibold">{startedTheme}</p>
+            </div>
+
+            <div className="rounded-2xl border border-white/10 bg-zinc-900 p-5">
+              <p className="mb-4 text-sm text-zinc-400">Your guesses</p>
+
+              <div className="space-y-3">
+                {guesses.map((item, index) => (
+                  <div
+                    key={`${item}-${index}`}
+                    className="rounded-xl border border-white/10 bg-zinc-950 p-4"
+                  >
+                    <p className="mb-1 text-sm text-purple-300">
+                      Round {index + 1}
+                    </p>
+                    <p className="font-semibold">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
   if (gameStarted) {
     return (
       <main className="min-h-screen bg-zinc-950 text-white">
@@ -31,7 +86,7 @@ export default function Home() {
               MEMORA
             </p>
 
-            <h1 className="mb-6 text-4xl font-bold">Round 1 / 3</h1>
+            <h1 className="mb-6 text-4xl font-bold">Round {round} / 3</h1>
 
             <div className="mb-6 rounded-2xl border border-white/10 bg-zinc-900 p-5">
               <p className="mb-2 text-sm text-zinc-400">Original Theme</p>
@@ -47,11 +102,26 @@ export default function Home() {
               <p className="text-zinc-500">AI image will appear here</p>
             </div>
 
+            <div className="mb-6">
+              <label className="mb-2 block text-sm font-medium text-zinc-200">
+                このイラストは何に見えますか？
+              </label>
+
+              <input
+                value={guess}
+                onChange={(event) => setGuess(event.target.value)}
+                placeholder="例：宇宙飛行士"
+                className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-white outline-none transition placeholder:text-zinc-500 focus:border-purple-400"
+              />
+            </div>
+
             <button
               type="button"
-              className="w-full rounded-xl bg-purple-500 px-4 py-3 font-semibold text-white transition hover:bg-purple-400"
+              onClick={handleNext}
+              disabled={!guess.trim()}
+              className="w-full rounded-xl bg-purple-500 px-4 py-3 font-semibold text-white transition hover:bg-purple-400 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400"
             >
-              Next
+              {round < 3 ? "Next" : "Show Result"}
             </button>
           </div>
         </div>
