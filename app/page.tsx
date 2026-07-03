@@ -48,8 +48,11 @@ export default function Home() {
               MEMORA
             </p>
 
-            <h1 className="mb-6 text-4xl font-bold">Result</h1>
+            <h1 className="mb-3 text-4xl font-bold">Result Timeline</h1>
 
+            <p className="mb-6 text-zinc-300">
+              最初のイメージが、あなたの解釈を通じてどう変化したかを振り返ります。
+            </p>
             <div className="mb-6 rounded-2xl border border-white/10 bg-zinc-900 p-5">
               <p className="mb-2 text-sm text-zinc-400">Original Theme</p>
               <p className="text-lg font-semibold">{startedTheme}</p>
@@ -68,20 +71,50 @@ export default function Home() {
                   <div key={`${item}-${index}`} className="space-y-4">
                     <div className="flex justify-center text-zinc-500">↓</div>
 
-                    <div className="flex h-48 items-center justify-center rounded-xl border border-dashed border-white/20 bg-zinc-950">
-                      <p className="text-sm text-zinc-500">
-                        Generated image {index + 1} will appear here
-                      </p>
-                    </div>
-
                     <div className="rounded-xl border border-white/10 bg-zinc-950 p-4">
-                      <p className="mb-1 text-sm text-purple-300">
-                        {index === guesses.length - 1 ? "Final Guess" : `Guess ${index + 1}`}
+                      <p className="mb-3 text-sm text-purple-300">
+                        Round {index + 1}
                       </p>
-                      <p className="font-semibold">{item}</p>
+
+                      <div className="mb-4 flex h-48 items-center justify-center rounded-xl border border-dashed border-white/20 bg-zinc-900">
+                        <p className="text-sm text-zinc-500">
+                          Generated image {index + 1} will appear here
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="mb-1 text-sm text-zinc-400">
+                          {index === guesses.length - 1 ? "Final Guess" : `Guess ${index + 1}`}
+                        </p>
+                        <p className="font-semibold">{item}</p>
+                      </div>
                     </div>
                   </div>
                 ))}
+
+                <div className="rounded-xl border border-purple-400/30 bg-purple-500/10 p-4">
+                  <p className="mb-3 text-sm text-purple-300">Final Transformation</p>
+
+                  <div className="space-y-3">
+                    <div>
+                      <p className="mb-1 text-xs uppercase tracking-[0.2em] text-zinc-500">
+                        From
+                      </p>
+                      <p className="font-semibold">{startedTheme}</p>
+                    </div>
+
+                    <div className="text-zinc-500">↓</div>
+
+                    <div>
+                      <p className="mb-1 text-xs uppercase tracking-[0.2em] text-zinc-500">
+                        To
+                      </p>
+                      <p className="font-semibold">
+                        {guesses[guesses.length - 1]}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
