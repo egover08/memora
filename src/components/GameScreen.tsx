@@ -4,7 +4,10 @@ type GameScreenProps = {
   startedStyle: string;
   imagePrompt: string;
   guess: string;
+  generatedMessage: string;
+  isGenerating: boolean;
   onGuessChange: (value: string) => void;
+  onGenerateImage: () => void;
   onNext: () => void;
 };
 
@@ -14,7 +17,10 @@ export function GameScreen({
   startedStyle,
   imagePrompt,
   guess,
+  generatedMessage,
+  isGenerating,
   onGuessChange,
+  onGenerateImage,
   onNext,
 }: GameScreenProps) {
   return (
@@ -59,6 +65,24 @@ export function GameScreen({
                 </p>
               </div>
             </div>
+
+            <button
+              type="button"
+              onClick={onGenerateImage}
+              disabled={isGenerating}
+              className="mt-4 w-full rounded-xl border border-purple-400/30 bg-purple-500/10 px-4 py-3 font-semibold text-purple-100 transition hover:bg-purple-500/20 disabled:cursor-not-allowed disabled:border-white/10 disabled:bg-zinc-800 disabled:text-zinc-500"
+            >
+              {isGenerating ? "Generating..." : "Generate Image Test"}
+            </button>
+
+            {generatedMessage && (
+              <div className="mt-4 rounded-xl border border-white/10 bg-zinc-950 p-4">
+                <p className="mb-1 text-sm text-zinc-400">API response</p>
+                <p className="text-sm font-medium text-zinc-200">
+                  {generatedMessage}
+                </p>
+              </div>
+            )}
 
             <div className="mt-4 rounded-xl border border-white/10 bg-zinc-950 p-4">
               <p className="mb-1 text-sm text-zinc-400">Generated from</p>

@@ -23,6 +23,8 @@ export default function Home() {
   const [guesses, setGuesses] = useState<string[]>([]);
   const [imagePrompts, setImagePrompts] = useState<string[]>([]);
   const [gameFinished, setGameFinished] = useState(false);
+  const [generatedMessage, setGeneratedMessage] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const handleStart = () => {
     setStartedTheme(theme);
@@ -46,6 +48,39 @@ export default function Home() {
     }
   };
 
+  const handleGenerateImage = async () => {
+    const currentPrompt = imagePrompts[round - 1];
+
+    if (!currentPrompt) return;
+
+    setIsGenerating(true);
+    setGeneratedMessage("");
+
+    try {
+      const response = await fetch("/api/generate-image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: currentPrompt,
+          style: startedStyle,
+        }),
+      });
+
+      const data = await response.json();
+
+      setGeneratedMessage(
+        `${data.message}: ${data.prompt} / style: ${data.style}`
+      );
+    } catch (error) {
+      console.error(error);
+      setGeneratedMessage("画像生成APIの呼び出しに失敗しました。");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   if (gameFinished) {
     return (
       <ResultScreen
@@ -55,7 +90,7 @@ export default function Home() {
       />
     );
   }
-  
+
   if (gameStarted) {
     return (
       <GameScreen
@@ -64,7 +99,10 @@ export default function Home() {
         startedStyle={startedStyle}
         imagePrompt={imagePrompts[round - 1] ?? ""}
         guess={guess}
+        generatedMessage={generatedMessage}
+        isGenerating={isGenerating}
         onGuessChange={setGuess}
+        onGenerateImage={handleGenerateImage}
         onNext={handleNext}
       />
     );
