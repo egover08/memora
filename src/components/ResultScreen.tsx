@@ -1,9 +1,10 @@
 type ResultScreenProps = {
   startedTheme: string;
   guesses: string[];
+  imagePrompts: string[];
 };
 
-export function ResultScreen({ startedTheme, guesses }: ResultScreenProps) {
+export function ResultScreen({ startedTheme, guesses, imagePrompts,}: ResultScreenProps) {
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
       <div className="mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-6 py-12">
@@ -36,10 +37,27 @@ export function ResultScreen({ startedTheme, guesses }: ResultScreenProps) {
                       Round {index + 1}
                     </p>
 
-                    <div className="mb-4 flex h-48 items-center justify-center rounded-xl border border-dashed border-white/20 bg-zinc-900">
-                      <p className="text-sm text-zinc-500">
-                        Generated image {index + 1} will appear here
-                      </p>
+                    <div className="mb-4 rounded-xl border border-white/10 bg-zinc-900 p-4">
+                      <div className="mb-3 flex items-center justify-between">
+                        <p className="text-sm text-purple-300">Image {index + 1}</p>
+                        <p className="text-xs text-zinc-500">Preview</p>
+                      </div>
+
+                      <div className="flex h-44 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-zinc-800 via-zinc-950 to-purple-950 p-4">
+                        <div className="text-center">
+                          <p className="mb-1 text-sm font-semibold text-zinc-300">
+                            Generated Image
+                          </p>
+                          <p className="text-xs text-zinc-500">
+                            Placeholder
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 rounded-lg border border-white/10 bg-zinc-950 p-3">
+                        <p className="mb-1 text-xs text-zinc-500">Generated from</p>
+                        <p className="text-sm font-medium">{imagePrompts[index]}</p>
+                      </div>
                     </div>
 
                     <div>

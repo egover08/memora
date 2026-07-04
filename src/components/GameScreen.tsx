@@ -2,6 +2,7 @@ type GameScreenProps = {
   round: number;
   startedTheme: string;
   startedStyle: string;
+  imagePrompt: string;
   guess: string;
   onGuessChange: (value: string) => void;
   onNext: () => void;
@@ -11,6 +12,7 @@ export function GameScreen({
   round,
   startedTheme,
   startedStyle,
+  imagePrompt,
   guess,
   onGuessChange,
   onNext,
@@ -35,8 +37,33 @@ export function GameScreen({
             <p className="text-lg font-semibold">{startedStyle}</p>
           </div>
 
-          <div className="mb-6 flex h-80 items-center justify-center rounded-2xl border border-dashed border-white/20 bg-zinc-900">
-            <p className="text-zinc-500">AI image will appear here</p>
+          <div className="mb-6 rounded-2xl border border-white/10 bg-zinc-900 p-5">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <p className="text-sm text-purple-300">Generated Image</p>
+                <p className="text-xs text-zinc-500">Round {round}</p>
+              </div>
+
+              <div className="rounded-full border border-white/10 bg-zinc-950 px-3 py-1 text-xs text-zinc-400">
+                Style: {startedStyle}
+              </div>
+            </div>
+
+            <div className="flex h-72 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-800 via-zinc-950 to-purple-950 p-6">
+              <div className="text-center">
+                <p className="mb-2 text-lg font-semibold text-zinc-200">
+                  Image Preview
+                </p>
+                <p className="text-sm text-zinc-500">
+                  AI-generated image will appear here
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-4 rounded-xl border border-white/10 bg-zinc-950 p-4">
+              <p className="mb-1 text-sm text-zinc-400">Generated from</p>
+              <p className="font-semibold">{imagePrompt}</p>
+            </div>
           </div>
 
           <div className="mb-6">

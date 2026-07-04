@@ -21,20 +21,24 @@ export default function Home() {
   const [round, setRound] = useState(1);
   const [guess, setGuess] = useState("");
   const [guesses, setGuesses] = useState<string[]>([]);
+  const [imagePrompts, setImagePrompts] = useState<string[]>([]);
   const [gameFinished, setGameFinished] = useState(false);
 
   const handleStart = () => {
     setStartedTheme(theme);
     setStartedStyle(selectedStyle);
+    setImagePrompts([theme]);
     setGameStarted(true);
   };
 
   const handleNext = () => {
     if (!guess.trim()) return;
 
-    setGuesses([...guesses, guess]);
+    const nextGuesses = [...guesses, guess];
+    setGuesses(nextGuesses);
 
     if (round < 3) {
+      setImagePrompts([...imagePrompts, guess]);
       setRound(round + 1);
       setGuess("");
     } else {
@@ -43,15 +47,22 @@ export default function Home() {
   };
 
   if (gameFinished) {
-    return <ResultScreen startedTheme={startedTheme} guesses={guesses} />;
+    return (
+      <ResultScreen
+        startedTheme={startedTheme}
+        guesses={guesses}
+        imagePrompts={imagePrompts}
+      />
+    );
   }
-
+  
   if (gameStarted) {
     return (
       <GameScreen
         round={round}
         startedTheme={startedTheme}
         startedStyle={startedStyle}
+        imagePrompt={imagePrompts[round - 1] ?? ""}
         guess={guess}
         onGuessChange={setGuess}
         onNext={handleNext}
